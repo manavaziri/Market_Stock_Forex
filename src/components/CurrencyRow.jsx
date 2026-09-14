@@ -2,8 +2,8 @@ function CurrencyRow1({ currency }) {
   return (
     <tr>
       <td>{currency.ticker}</td>
-      <td>{currency.trend}</td>
-      <td>{currency.signal}</td>
+      <td>{currency.group}</td>
+      <td>{currency.importance}</td>
     </tr>
   )
 }
@@ -24,8 +24,8 @@ function CurrencyRow۳({ currency, onSelect }) {
   return (
     <tr onClick={() => onSelect(currency)}>
       <td>{currency.ticker}</td>
-      <td>{currency.trend}</td>
-      <td>{currency.signal}</td>
+      <td>{currency.group}</td>
+      <td>{currency.importance}</td>
     </tr>
   );
 }
@@ -36,8 +36,8 @@ function CurrencyRow({ currency, onSelect, selected }) {
       onClick={() => onSelect(currency)}
     >
       <td>{currency.ticker}</td>
-      <td>{currency.trend}</td>
-      <td>{currency.signal}</td>
+      <td>{currency.group}</td>
+      <td>{currency.importance}</td>
     </tr>
   );
 }

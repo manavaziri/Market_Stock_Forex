@@ -6,12 +6,56 @@ import FilterBox from './components/FilterBox'
 import { useState } from "react";
 function App() {
 
-  
-  const currencies = [
-    { ticker: "EURUSD", country:"EUR",group: "Business", importance: "Low" },
-    { ticker: "GBPUSD", country:"GBP",group: "Grow", importance: "High" },
-    { ticker: "JPYUSD", country:"USD",group: "Grow", importance: "Medium" }
+  const filterConfigCountry = [
+  {
+    title: "Country",
+    field: "country",
+    options: optionCountry,
+    showAllNone: true
+  },
+  {
+    title: "Group",
+    field: "group",
+    options: optionGroup,
+    showAllNone: true
+  },
+  {
+    title: "Importance",
+    field: "importance",
+    options: optionImportance,
+    showAllNone: false
+  }
+]
+const filterConfigCurrency = [
+  {
+    title: "Currency",
+    field: "ticker",
+    options: optionCurrency,
+    showAllNone: true
+  },
+  {
+    title: "Trend",
+    field: "trend",
+    options: optionTrend,
+    showAllNone: true
+  },
+  {
+    title: "Signal",
+    field: "signal",
+    options: optionSignal,
+    showAllNone: true
+  }
+]
+  const countries = [
+    { ticker: "EUR", country:"EUM",group: "Business", importance: "Low" },
+    { ticker: "GBP", country:"UK",group: "Grow", importance: "High" },
+    { ticker: "USD", country:"US",group: "Grow", importance: "Medium" }
   ]
+  currencies=[
+    {ticker: "EURUSD",country: "EUM",  trend: "Up",  signal: "Strong"},
+    {ticker: "GBPUSD",country: "UK",  trend: "Low",  signal: "Medium"},
+    {ticker: "NZDUSD",country: "NZD",  trend: "Medium",  signal: "Low"}
+    ]
   const [selectedCurrency, setSelectedCurrency] = useState(["ALL"]);
   const [selectedGroup, setSelectedGroup] = useState(["All"]);
   const [selectedImportance, setSelectedImportance] = useState(["High"]);
@@ -33,14 +77,20 @@ function App() {
       (item) => importanceOrder[item]
     )
   )
- 
-  const filteredCurrencies = currencies.filter(
+  const getField = (item, field) => item[field]
+
+  const filteredCurrencies1 = currencies.filter(
     (currency) =>
       selectedCurrency.includes(currency.ticker) &&
       selectedGroup.includes(currency.group) &&
       importanceOrder[currency.importance] >= maxImportance
   )
-  
+  const filteredCurrencies = currencies.filter(
+  (currency) =>
+    selectedCurrency.includes(getField(currency, "ticker")) &&
+    selectedGroup.includes(getField(currency, "group")) &&
+    importanceOrder[getField(currency, "importance")] >= maxImportance
+)
   return (
     <>
       <h1>Forex Dashboard</h1>
@@ -82,7 +132,7 @@ function App() {
 
       <CurrencyTable
         title="Currency Market"
-        headers={["Ticker", "Group", "Importance"]}
+        headers={["Ticker", "Group", "Signal"]}
         currencies={filteredCurrencies}
         onSelect={setSelectedCurrency}
         selectedCurrency={selectedCurrency}

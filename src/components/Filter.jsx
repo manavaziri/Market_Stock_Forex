@@ -1,4 +1,4 @@
-function Filter({ title, options, selected, onSelect }) {
+function Filter({ title, options, selected, onSelect, showAllNone }) {
   const toggle = (value) => {
     // ALL
     if (value === "all") {
@@ -25,36 +25,39 @@ function Filter({ title, options, selected, onSelect }) {
       <label>{title}</label>
 
       <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={selected.length === options.length}
-            onChange={() => toggle("all")}
-          />
-          All
-        </label>
+        {showAllNone && (
+          <>
+            <label>
+              <input
+                type="checkbox"
+                checked={selected.length === options.length}
+                onChange={() => toggle("all")}
+              />
+              All
+            </label>
 
-        <label>
-          <input
-            type="checkbox"
-            checked={selected.length === 0}
-            onChange={() => toggle("none")}
-          />
-          None
-        </label>
-
-        {options.map((opt) => (
-          <label key={opt}>
-            <input
-              type="checkbox"
-              checked={selected.includes(opt)}
-              onChange={() => toggle(opt)}
-            />
-            {opt}
-          </label>
-        ))}
-      </div>
-    </div>
+            <label>
+              <input
+                type="checkbox"
+                checked={selected.length === 0}
+                onChange={() => toggle("none")}
+              />
+              None
+            </label>
+          </>)}
+        {
+          options.map((opt) => (
+            <label key={opt}>
+              <input
+                type="checkbox"
+                checked={selected.includes(opt)}
+                onChange={() => toggle(opt)}
+              />
+              {opt}
+            </label>
+          ))}
+      </div >
+    </div >
   );
 }
 
