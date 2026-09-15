@@ -1,27 +1,36 @@
 import './App.css'
-import CurrencyTable from './components/CurrencyTable'
-{/*import CurrencyDetails from './CurrencyDetails'*/ }
-import CurrencyDetails from './components/CurrencyDetails';
-import FilterBox from './components/FilterBox'
 import { useState } from "react";
+import ShowTable from './components/ShowTable'
+{/*import CurrencyDetails from './CurrencyDetails'
+import CurrencyDetails from './components/CurrencyDetails';*/ }
+import FilterBox from './components/FilterBox'
+import {
+  optionGroup,
+  optionCountry,
+  optionImportance,
+  optionCurrency,
+  optionTrend,
+  optionSignal,
+  createCountryFilterConfig,
+  createCurrencyFilterConfig
+} from "./config/filterConfig";
+import { countries, currencies } from "./data/marketData";
 function App() {
 
-  
-  const currencies = [
-    { ticker: "EURUSD", country:"EUR",group: "Business", importance: "Low" },
-    { ticker: "GBPUSD", country:"GBP",group: "Grow", importance: "High" },
-    { ticker: "JPYUSD", country:"USD",group: "Grow", importance: "Medium" }
-  ]
-  const [selectedCurrency, setSelectedCurrency] = useState(["ALL"]);
-  const [selectedGroup, setSelectedGroup] = useState(["All"]);
-  const [selectedImportance, setSelectedImportance] = useState(["High"]);
 
-  const optionGroup = ["Business", "Grow", "Inflation"];
-  const optionCurrency = ["EURUSD", "GBPUSD", "USDJPY"]
-  const optionImportance = ["Low", "Medium", "High"]
+
+
+
+  const [selectedGroup, setSelectedGroup] = useState(optionGroup)
+  const [selectedCountry, setSelectedCountry] = useState(optionCountry)
+  const [selectedImportance, setSelectedImportance] = useState(optionImportance)
+
+  const [selectedCurrency, setSelectedCurrency] = useState(optionCurrency);
+  const [selectedTrend, setSelectedTrend] = useState(optionTrend);
+  const [selectedSignal, setSelectedSignal] = useState(optionSignal);
 
   const closeDetails = () => {
-    setSelectedCurrency(null);
+    setSelectedCountry(null);
   };
   const importanceOrder = {
     "Low": 1,
@@ -33,54 +42,51 @@ function App() {
       (item) => importanceOrder[item]
     )
   )
- 
-  const filteredCurrencies = currencies.filter(
+  const filterConfigCountry = createCountryFilterConfig({
+    selectedCountry,
+    setSelectedCountry,
+    selectedGroup,
+    setSelectedGroup,
+    selectedImportance,
+    setSelectedImportance
+  });
+  const filterConfigCurrency = createCurrencyFilterConfig({
+    selectedCurrency,
+    setSelectedCurrency,
+    selectedTrend,
+    setSelectedTrend,
+    selectedSignal,
+    setSelectedSignal
+  });
+
+  {/*const filteredCurrencies = countries.filter(
     (currency) =>
-      selectedCurrency.includes(currency.ticker) &&
+      setSelectedCountry.includes(currency.ticker) &&
       selectedGroup.includes(currency.group) &&
       importanceOrder[currency.importance] >= maxImportance
-  )
-  
+  )*/}
+
   return (
     <>
       <h1>Forex Dashboard</h1>
 
-      {/*<table>
-        <thead>
-          <tr>
-            <th>Ticker</th>
-            <th>Trend</th>
-            <th>Signal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currencies.map((obj) => (
-            <CurrencyRow
-              key={obj.ticker}
-              currency={obj}
-              onSelect={setSelectedCurrency}
-              selected={selectedCurrency?.ticker === obj.ticker}
+      <FilterBox filters={filterConfigCountry} />
+      <ShowTable
+        title="Currency Market"
+        data={currencies}
+        headers={["Ticker", "Trend", "Signal"]}
+        fields={["ticker", "trend", "signal"]}
 
-            />
-          ))}
-        </tbody>
-
-      </table>*/}
-      <FilterBox
-        optionGroup={optionGroup}
-        optionCurrency={optionCurrency}
-        optionImportance={optionImportance}
-        selectedGroup={selectedGroup}
-        selectedCurrency={selectedCurrency}
-        selectedImportance={selectedImportance}
-        setSelectedGroup={setSelectedGroup}
-        setSelectedCurrency={setSelectedCurrency}
-        setSelectedImportance={setSelectedImportance}
+      />
+      <ShowTable
+        title="Country Market"
+        data={countries}
+        headers={["Ticker", "Country", "Group", "Importance"]}
+        fields={["ticker", "country", "group", "importance"]}
 
       />
 
-
-      <CurrencyTable
+      {/*<CurrencyTable
         title="Currency Market"
         headers={["Ticker", "Group", "Importance"]}
         currencies={filteredCurrencies}
@@ -88,11 +94,11 @@ function App() {
         selectedCurrency={selectedCurrency}
       />
       {/*{selectedCurrency && (
-        <CurrencyDetails />)}*/}
+        <CurrencyDetails />)}
       {selectedCurrency && (
         selectedCurrency.ticker)}
       {selectedCurrency &&
-        <CurrencyDetails currency={selectedCurrency} onClose={closeDetails} />}
+        <CurrencyDetails currency={selectedCurrency} onClose={closeDetails} />}*/}
 
     </>
   )
