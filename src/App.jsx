@@ -29,6 +29,7 @@ function App() {
   const [selectedTrend, setSelectedTrend] = useState(optionTrend);
   const [selectedSignal, setSelectedSignal] = useState(optionSignal);
 
+  const [selectedRow, setSelectedRow] = useState(null);
   const closeDetails = () => {
     setSelectedCountry(null);
   };
@@ -72,18 +73,25 @@ function App() {
 
       <FilterBox filters={filterConfigCountry} />
       <ShowTable
-        title="Currency Market"
-        data={currencies}
-        headers={["Ticker", "Trend", "Signal"]}
-        fields={["ticker", "trend", "signal"]}
+  title="Currency Market"
+  data={currencies}
+  headers={["Ticker", "Trend", "Signal"]}
+  fields={["ticker", "trend", "signal"]}
+  rowKey="ticker"
+  onSelect={setSelectedRow}
+  selectedKey={selectedRow?.ticker}
+   
 
-      />
+/>
       <ShowTable
         title="Country Market"
         data={countries}
         headers={["Ticker", "Country", "Group", "Importance"]}
         fields={["ticker", "country", "group", "importance"]}
-
+        rowKey="ticker"
+        onSelect={setSelectedRow}
+        selectedKey={selectedRow?.ticker}
+        sortableFields={["group", "importance"]}
       />
 
       {/*<CurrencyTable
