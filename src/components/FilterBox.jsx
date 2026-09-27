@@ -16,7 +16,6 @@ function FilterBox({ filters }) {
     </div>
   );
 }
-
 export default FilterBox;
 
  

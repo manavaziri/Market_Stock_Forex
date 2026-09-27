@@ -9,9 +9,20 @@ function ShowTable({
   onSelect,
   selectedKey,
   sortableFields = [],
+  numericFields = [],
+}) {
+  {/*function ShowTable({
+  title,
+  data,
+  headers,
+  fields,
+  rowKey,
+  onSelect,
+  selectedKey,
+  sortableFields = [],
 
 }) {
-  {/*const [sortConfig, setSortConfig] = useState({});
+  const [sortConfig, setSortConfig] = useState({});
   const handleSort = (field, direction) => {
     setSortConfig((prev) => ({
       ...prev,
@@ -104,6 +115,11 @@ function ShowTable({
 
       let valueA = a[field];
       let valueB = b[field];
+      if (numericFields.includes(field)) {
+        valueA = Number(valueA);
+        valueB = Number(valueB);
+      }
+
 
       if (field === "importance") {
         valueA = importanceOrder[valueA];
@@ -130,52 +146,61 @@ function ShowTable({
       <table>
         <thead>
           <tr>
-            {headers.map((header, index) => (
-              <th key={header}>
-                {header}
+            {headers.map((header, index) => {
+              const field = fields[index];
 
-                {sortableFields.includes(fields[index]) && (
-                  <span className="sort-buttons">
-                    {/* <button onClick={() => handleSort(fields[index], "+")}>
-                      +
-                    </button>*/}
-                    <button
-                      className={
-                        sortConfig.some(
-                          (item) =>
-                            item.field === fields[index] &&
-                            item.direction === "+"
-                        )
-                          ? "active-sort"
-                          : ""
-                      }
-                      onClick={() => handleSort(fields[index], "+")}
-                    >
-                      +
-                    </button>
+              const sortIndex = sortConfig.findIndex(
+                (item) => item.field === field
+              );
+              const sortPrioritySymbols = ["①", "②", "③", "④", "⑤"];
 
-                    <button
-                      className={
-                        sortConfig.some(
-                          (item) =>
-                            item.field === fields[index] &&
-                            item.direction === "-"
-                        )
-                          ? "active-sort"
-                          : ""
-                      }
-                      onClick={() => handleSort(fields[index], "-")}
-                    >
-                      -
-                    </button>
+              return (
+                <th key={header}>
+                  {header}
 
-                    <button onClick={() => handleSort(fields[index], "0")}>
-                      0
-                    </button>
-                  </span>
-                )}
-              </th>
-            ))}
+                  {sortIndex !== -1 && (
+                    <span className="sort-priority">
+                      {sortPrioritySymbols[sortIndex]}
+                    </span>
+                  )}
+
+                  <button
+                    className={
+                      sortConfig.some(
+                        (item) =>
+                          item.field === fields[index] &&
+                          item.direction === "+"
+                      )
+                        ? "active-sort"
+                        : ""
+                    }
+                    onClick={() => handleSort(fields[index], "+")}
+                  >
+                    +
+                  </button>
+
+                  <button
+                    className={
+                      sortConfig.some(
+                        (item) =>
+                          item.field === fields[index] &&
+                          item.direction === "-"
+                      )
+                        ? "active-sort"
+                        : ""
+                    }
+                    onClick={() => handleSort(fields[index], "-")}
+                  >
+                    -
+                  </button>
+
+                  <button onClick={() => handleSort(fields[index], "0")}>
+                    0
+                  </button>
+
+                </th>
+              );
+            })}
           </tr>
         </thead>
 

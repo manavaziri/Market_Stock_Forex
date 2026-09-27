@@ -103,3 +103,40 @@ export const createCountryFilterConfig = ({
     showAllNone: false
   }
 ];
+
+export const createEconomicFilterConfig = ({
+  selectedEconomicCurrency,
+  setSelectedEconomicCurrency,
+  selectedEconomicCountry,
+  setSelectedEconomicCountry,
+  selectedEconomicImp,
+  setSelectedEconomicImp,
+  economicCurrencies,
+  economicCountries,
+  economicImpValues,
+}) => [
+  {
+    title: "Currency",
+    field: "Currency",
+    options: economicCurrencies,
+    selected: selectedEconomicCurrency,
+    onSelect: setSelectedEconomicCurrency,
+    showAllNone: true,
+  },
+  {
+    title: "Country",
+    field: "Country",
+    options: economicCountries,
+    selected: selectedEconomicCountry,
+    onSelect: setSelectedEconomicCountry,
+    showAllNone: true,
+  },
+  {
+    title: "Importance",
+    field: "Imp",
+    options: economicImpValues,
+    selected: selectedEconomicImp,
+    onSelect: setSelectedEconomicImp,
+    showAllNone: true,
+  },
+];
